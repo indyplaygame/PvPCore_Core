@@ -1,0 +1,223 @@
+Messages:
+  dash-cooldown: '&cYou can use it again in %time% second(s).'
+  music-enable: "&aYou have enabled background music."
+  music-disable: "&cYou have disabled background music."
+  spawn-command: "&aYou have been teleported to the spawn."
+  wrong-executor: "&cYou can run this command only as player."
+
+ModeGUI:
+  item:
+    slot: 0
+    material: COMPASS
+    skullOwner: '%player%'
+    durability: 0
+    name: '&7Select Mode'
+    amount: 1
+    lore:
+      - '&8Right click to select mode.'
+  gui:
+    rows: 3
+    title: '&8Select Mode'
+    items:
+      empty-slots:
+        enabled: true
+        material: STAINED_GLASS_PANE
+        durability: 8
+        amount: 1
+        skullOwner: ''
+        name: ''
+        lore:
+          - ''
+  modes:
+    list:
+      - 'practice'
+    practice:
+      item:
+        slot: 10
+        material: ANVIL
+        skullOwner: ''
+        durability: 0
+        name: '&8Practice'
+        amount: 1
+        lore:
+          - ''
+          - '&7Practice your skills with special mode.'
+          - '&7Right click to join this mode.'
+      command: '/queue'
+
+PlayersVisibilitySwitch:
+  messages:
+    shown: '&aOther players are now shown!'
+    hidden: '&cOther players are now hidden!'
+  item:
+    slot: 5
+    shown:
+      material: EYE_OF_ENDER
+      skullOwner: '%player%'
+      durability: 0
+      name: '&cHide players'
+      amount: 1
+      lore:
+        - '&8Right click to hide all players.'
+        - '&8Players are currently &ashown&8.'
+    hidden:
+      material: EYE_OF_ENDER
+      skullOwner: '%player%'
+      durability: 0
+      name: '&aShow players'
+      amount: 1
+      lore:
+        - '&8Right click to show all players.'
+        - '&8Players are currently &chidden&8.'
+
+Stats:
+  item:
+    slot: 8
+    material: SKULL_ITEM
+    skullOwner: '%player%'
+    durability: 3
+    name: '&7Your stats'
+    amount: 1
+    lore:
+      - '&8Right click to see your stats.'
+  gui:
+    rows: 3
+    title: '&8Your stats'
+    items:
+      empty-slots:
+        enabled: true
+        material: STAINED_GLASS_PANE
+        durability: 8
+        amount: 1
+        skullOwner: ''
+        name: ''
+        lore:
+          - ''
+    stats:
+      list:
+        - 'kills'
+        - 'deaths'
+        - 'wins'
+        - 'time'
+        - 'general'
+      items:
+        kills:
+          slot: 10
+          material: IRON_SWORD
+          amount: 1
+          skullOwner: ''
+          durability: 0
+          name: '&7Your Kills: &c%strikepractice_kills%'
+          lore:
+            - ''
+        deaths:
+          slot: 11
+          material: SKULL_ITEM
+          amount: 1
+          skullOwner: '_'
+          durability: 2
+          name: '&7Your Deaths: &c%strikepractice_deaths%'
+          lore:
+            - ''
+        wins:
+          slot: 12
+          material: GOLDEN_APPLE
+          amount: 1
+          skullOwner: ''
+          durability: 1
+          name: '&7Your Wins: &c%strikepractice_own_wins%'
+          lore:
+            - ''
+        time:
+          slot: 13
+          material: WATCH
+          amount: 1
+          skullOwner: ''
+          durability: 0
+          name: '&7Time Spent: &c%statistic_days_played%&7d &c%statistic_hours_played%&7h &c%statistic_minutes_played%&7m &c%statistic_seconds_played%&7s'
+          lore:
+            - ''
+        general:
+          slot: 16
+          material: SKULL_ITEM
+          amount: 1
+          skullOwner: '%player%'
+          durability: 3
+          name: '&8General Stats:'
+          lore:
+            - ''
+            - '&7Level: &c%alonsolevels_level%'
+            - '&7Next Level: &c%alonsolevels_experience_to_level_up%'
+            - ''
+            - '&7Your Rank: &c%strikepractice_elo_rank%'
+            - ''
+            - '&7Your Ping: &c%strikepractice_ping%'
+
+Dash:
+  cooldown: 5
+  pitch: -5
+  multiplier: 20
+  sound:
+    enabled: true
+    sound: FIREWORK_LAUNCH
+    volume: 100
+    pitch: 1
+  item:
+    slot: 3
+    material: FIREWORK
+    skullOwner: '%player%'
+    durability: 0
+    name: '&7Dash'
+    amount: 1
+    lore:
+      - '&8Right click to dash forward.'
+
+TutorialMessage:
+  message:
+    - '&8--------------------------'
+    - '&cExample tutorial message:'
+    - '&7This is a example message'
+    - '&8--------------------------'
+
+Lobby:
+  music:
+    enabled: true
+    songs:
+      - '/music/Friday.nbs'
+    random-order: true
+    volume: 100
+  backtospawn:
+    level: -20
+    spawn:
+      world: world
+      x: 0
+      y: 70
+      z: 0
+
+Kits:
+  item:
+    slot: 1
+    material: DIAMOND_SWORD
+    skullOwner: '%player%'
+    durability: 0
+    name: '&7Custom Kit'
+    amount: 1
+    lore:
+      - '&8Right click create custom kit.'
+  command: '/kiteditor'
+  room:
+    coords:
+      x: 0
+      y: 88
+      z: 0
+      world: world
+    exit-button:
+      x: 0
+      y: 89
+      z: -1
+      world: world
+      command: '/kiteditor'
+    player-leave-command:
+
+DeveloperMode:
+  enabled: true

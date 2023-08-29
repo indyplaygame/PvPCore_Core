@@ -1,0 +1,22 @@
+name: PvPCore Core
+version: 1.0
+main: indy.pvpcore.core.main.Main
+api-version: 1.8
+author: indy
+
+depend: [PlaceholderAPI, NoteBlockAPI]
+
+commands:
+  modes:
+  stats:
+  playershide:
+  playersshow:
+  playerstoggle:
+  editkit:
+  spawn:
+  music:
+
+permissions:
+  core.ignoreclickevent:
+    description: Allows you to ignore click events like InventoryDragEvent or InventoryClickEvent
+    default: op

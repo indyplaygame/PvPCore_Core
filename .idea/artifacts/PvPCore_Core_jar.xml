@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PvPCore_Core:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PvPCore_Core_jar</output-path>
+    <root id="archive" name="PvPCore_Core.jar">
+      <element id="module-output" name="PvPCore_Core" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Engines/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
