@@ -7,6 +7,7 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import indy.pvpcore.core.gui.ModeGUI;
 import indy.pvpcore.core.gui.StatsGUI;
+import indy.pvpcore.core.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -22,6 +23,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +38,8 @@ public class Events implements Listener {
     private static Map<Player, Long> cooldowns = new HashMap<>();
     public static List<Player> hiddenPlayers = new ArrayList<>();
     public static RadioSongPlayer song_player;
+
+    public MySQL SQL;
 
     public static void setupMusic() {
         List<String> song_list = getList("Lobby.music.songs");
@@ -58,16 +63,29 @@ public class Events implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        this.SQL = new MySQL();
         Player player = e.getPlayer();
+
+        try {
+            SQL.connect();
+
+            ResultSet settings = SQL.getSettings(player);
+
+            if(!settings.next()) {
+                SQL.registerJoin(player);
+            } else {
+                if(settings.getBoolean(4) == true && !song_player.getPlayerUUIDs().contains(player.getUniqueId())) {
+                    song_player.addPlayer(player);
+                }
+            }
+        } catch(SQLException | ClassNotFoundException | NullPointerException ex) {
+            ex.printStackTrace();
+        }
 
         initItems(player);
 
         for(String message : getList("TutorialMessage.message")) {
             player.sendMessage(formatColor(message));
-        }
-
-        if(!song_player.getPlayerUUIDs().contains(player.getUniqueId())) {
-            song_player.addPlayer(player);
         }
 
         for(Player p : hiddenPlayers) {

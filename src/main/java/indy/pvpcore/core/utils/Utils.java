@@ -16,8 +16,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class Utils {
 

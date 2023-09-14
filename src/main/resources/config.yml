@@ -4,6 +4,8 @@ Messages:
   music-disable: "&cYou have disabled background music."
   spawn-command: "&aYou have been teleported to the spawn."
   wrong-executor: "&cYou can run this command only as player."
+  database-connected: 'Database is connected!'
+  database-not-connected: 'Database is not connected!'
 
 ModeGUI:
   item:
@@ -218,6 +220,14 @@ Kits:
       world: world
       command: '/kiteditor'
     player-leave-command:
+
+Database:
+  host: localhost
+  port: 3306
+  database: testserver
+  user: root
+  password:
+  prefix: core_
 
 DeveloperMode:
   enabled: true

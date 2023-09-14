@@ -4,10 +4,17 @@ import indy.pvpcore.core.commands.*;
 import indy.pvpcore.core.events.Events;
 import indy.pvpcore.core.gui.ModeGUI;
 import indy.pvpcore.core.gui.StatsGUI;
+import indy.pvpcore.core.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
+
+import static indy.pvpcore.core.utils.Utils.getString;
+
 public class Main extends JavaPlugin {
+
+    public MySQL SQL;
 
     @Override
     public void onEnable() {
@@ -36,11 +43,24 @@ public class Main extends JavaPlugin {
 
             saveConfig();
             reloadConfig();
+
+            this.SQL = new MySQL();
+            try {
+                SQL.connect();
+            } catch(ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+                Bukkit.getLogger().info(getString("Messages.database-not-connected"));
+            }
+
+            if(SQL.isConnected()) {
+                Bukkit.getLogger().info(getString("Messages.database-connected"));
+                SQL.createTable();
+            }
         }
     }
 
     @Override
     public void onDisable() {
-
+        SQL.disconnect();
     }
 }
