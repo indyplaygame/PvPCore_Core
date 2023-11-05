@@ -20,3 +20,6 @@ permissions:
   core.ignoreclickevent:
     description: Allows you to ignore click events like InventoryDragEvent or InventoryClickEvent
     default: op
+  core.executeblockedcommands:
+    description: Allows you to execute commands that are not on the whitelist
+    default: op

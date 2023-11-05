@@ -16,10 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -33,7 +30,6 @@ import java.util.Map;
 import static indy.pvpcore.core.utils.Utils.*;
 
 public class Events implements Listener {
-
     private static List<Player> editingKit = new ArrayList<>();
     private static Map<Player, Long> cooldowns = new HashMap<>();
     public static List<Player> hiddenPlayers = new ArrayList<>();
@@ -60,6 +56,41 @@ public class Events implements Listener {
         song_player.setPlaying(true);
         song_player.setVolume(getInt("Lobby.music.volume").byteValue());
     }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        String command = e.getMessage();
+        String[] args = command.split(" ");
+        Player player = e.getPlayer();
+        List<String> list = getList("Commands." + getString("Commands.mode"));
+
+//        if(player.hasPermission("core.executeblockedcommands")) return;
+
+        if((!list.contains(args[0].toLowerCase()) && getString("Commands.mode").equalsIgnoreCase("whitelist") ||
+           (list.contains(args[0].toLowerCase()) && getString("Commands.mode").equalsIgnoreCase("blacklist")))) {
+            player.sendMessage(getString("Messages.command-blocked"));
+            e.setCancelled(true);
+        }
+    }
+
+//    @EventHandler
+//    public void onTabCompletion(PlayerChatTabCompleteEvent e) {
+//        String command = e.getChatMessage();
+//        Player player = e.getPlayer();
+//        List<String> list = getList("Commands." + getString("Commands.mode"));
+//
+////        if(player.hasPermission("core.executeblockedcommands")) return;
+//
+//        System.out.println(e.getTabCompletions());
+//
+//        if((!list.contains(command.toLowerCase()) && getString("Commands.mode").equalsIgnoreCase("whitelist") ||
+//           (list.contains(command.toLowerCase()) && getString("Commands.mode").equalsIgnoreCase("blacklist")))) {
+//            player.sendMessage(getString("Messages.command-blocked"));
+//            e.getTabCompletions().remove(command);
+//        }
+//
+//        System.out.println(e.getTabCompletions());
+//    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -229,12 +260,15 @@ public class Events implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        if(e.getPlayer().getLocation().getY() < getDouble("Lobby.backtospawn.level")) {
+        if(e.getPlayer().getLocation().getY() <= getDouble("Lobby.backtospawn.level") &&
+           getList("Lobby.backtospawn.worlds").contains(e.getPlayer().getLocation().getWorld().getName())) {
             e.getPlayer().teleport(new Location(
                     Bukkit.getWorld(getString("Lobby.backtospawn.spawn.world")),
                     getDouble("Lobby.backtospawn.spawn.x"),
                     getDouble("Lobby.backtospawn.spawn.y"),
-                    getDouble("Lobby.backtospawn.spawn.z"))
+                    getDouble("Lobby.backtospawn.spawn.z"),
+                    (float) getDouble("Lobby.backtospawn.spawn.yaw"),
+                    (float) getDouble("Lobby.backtospawn.spwan.pitch"))
             );
         }
     }

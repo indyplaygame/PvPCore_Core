@@ -6,6 +6,14 @@ Messages:
   wrong-executor: "&cYou can run this command only as player."
   database-connected: 'Database is connected!'
   database-not-connected: 'Database is not connected!'
+  command-blocked: '&cYou are not allowed to use this command!'
+
+Commands:
+  mode: whitelist
+  whitelist:
+    - '/give'
+  blacklist:
+    - '/gamemode'
 
 ModeGUI:
   item:
@@ -190,11 +198,15 @@ Lobby:
     volume: 100
   backtospawn:
     level: -20
+    worlds:
+      - world
     spawn:
       world: world
       x: 0
       y: 70
       z: 0
+      yaw: 0
+      pitch: 0
 
 Kits:
   item:
