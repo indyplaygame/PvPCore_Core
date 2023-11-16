@@ -10,16 +10,21 @@ import indy.pvpcore.core.gui.StatsGUI;
 import indy.pvpcore.core.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,6 +39,7 @@ public class Events implements Listener {
     private static Map<Player, Long> cooldowns = new HashMap<>();
     public static List<Player> hiddenPlayers = new ArrayList<>();
     public static RadioSongPlayer song_player;
+    public static Map<Location, String> buttons = new HashMap<>();
 
     public MySQL SQL;
 
@@ -55,6 +61,17 @@ public class Events implements Listener {
         song_player.setRandom(getBoolean("Lobby.music.random-order"));
         song_player.setPlaying(true);
         song_player.setVolume(getInt("Lobby.music.volume").byteValue());
+    }
+
+    public static void getButtons() {
+        for(String button : getList("Buttons.list")) {
+            buttons.put(new Location(
+                    Bukkit.getWorld(getString("Buttons.locations." + button + ".coords.world")),
+                    getDouble("Buttons.locations." + button + ".coords.x"),
+                    getDouble("Buttons.locations." + button + ".coords.y"),
+                    getDouble("Buttons.locations." + button + ".coords.z")
+            ), button);
+        }
     }
 
     @EventHandler
@@ -200,16 +217,21 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onItemClick(PlayerInteractEvent e) {
-
+    public void onButtonClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-
-        if(e.hasBlock() && e.getClickedBlock().getLocation().equals(new Location(
+        Location exit_button = new Location(
                 Bukkit.getWorld(getString("Kits.room.exit-button.world")),
                 getDouble("Kits.room.exit-button.x"),
                 getDouble("Kits.room.exit-button.y"),
                 getDouble("Kits.room.exit-button.z")
-        )) && editingKit.contains(player)) {
+        );
+
+        if(!e.hasBlock()) return;
+        if(!e.getAction().name().equalsIgnoreCase("RIGHT_CLICK_BLOCK")) return;
+
+        Block block = e.getClickedBlock();
+
+        if(block.getLocation().equals(exit_button) && editingKit.contains(player) && block.getType().name().endsWith("_BUTTON")) {
             player.chat(getString("Kits.room.exit-button.command"));
 
             player.teleport(new Location(
@@ -227,6 +249,27 @@ public class Events implements Listener {
 
             editingKit.remove(player);
         }
+
+        if(buttons.containsKey(block.getLocation()) && block.getType().name().endsWith("_BUTTON")) {
+            String button = buttons.get(e.getClickedBlock().getLocation());
+
+            if(getString("Buttons.locations." + button + ".reward.type").equalsIgnoreCase("COMMAND")) {
+                plugin().getServer().dispatchCommand(
+                        plugin().getServer().getConsoleSender(),
+                        getString("Buttons.locations." + button + ".reward.command").replace("%player%", player.getName())
+                );
+            } else if(getString("Buttons.locations." + button + ".reward.type").equalsIgnoreCase("ITEM")) {
+                player.getInventory().addItem(new ItemStack(
+                        Material.valueOf(getString("Buttons.locations." + button + ".reward.material")),
+                        getInt("Buttons.locations." + button + ".reward.amount"))
+                );
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemClick(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
 
         if(e.hasItem() && e.getItem().getItemMeta().hasDisplayName()) {
             String item_name = e.getItem().getItemMeta().getDisplayName();
@@ -268,7 +311,7 @@ public class Events implements Listener {
                     getDouble("Lobby.backtospawn.spawn.y"),
                     getDouble("Lobby.backtospawn.spawn.z"),
                     (float) getDouble("Lobby.backtospawn.spawn.yaw"),
-                    (float) getDouble("Lobby.backtospawn.spwan.pitch"))
+                    (float) getDouble("Lobby.backtospawn.spawn.pitch"))
             );
         }
     }

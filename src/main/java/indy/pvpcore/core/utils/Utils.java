@@ -15,6 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class Utils {
@@ -68,6 +70,11 @@ public class Utils {
 
     public static String formatColor(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static String formatDate(Date date) {
+        SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
+        return date_format.format(date);
     }
 
     public static ItemStack createItem(String material, String name, List<String> lore, int amount, int durability, String skullOwner) {

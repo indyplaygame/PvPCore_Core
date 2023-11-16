@@ -1,5 +1,6 @@
 package indy.pvpcore.core.main;
 
+import indy.pvpcore.core.chest.DailyChest;
 import indy.pvpcore.core.commands.*;
 import indy.pvpcore.core.events.Events;
 import indy.pvpcore.core.gui.ModeGUI;
@@ -28,10 +29,13 @@ public class Main extends JavaPlugin {
             getConfig().options().copyDefaults(true);
 
             Events.setupMusic();
+            Events.getButtons();
+            rewardCommand.getRewards();
 
             getServer().getPluginManager().registerEvents(new Events(), this);
             getServer().getPluginManager().registerEvents(new ModeGUI(), this);
             getServer().getPluginManager().registerEvents(new StatsGUI(), this);
+            getServer().getPluginManager().registerEvents(new DailyChest(), this);
 
             getCommand("modes").setExecutor(new modesCommand());
             getCommand("stats").setExecutor(new statsCommand());
@@ -40,6 +44,7 @@ public class Main extends JavaPlugin {
             getCommand("editkit").setExecutor(new editkitCommand());
             getCommand("spawn").setExecutor(new spawnCommand());
             getCommand("music").setExecutor(new musicCommand());
+            getCommand("reward").setExecutor(new rewardCommand());
 
             saveConfig();
             reloadConfig();
@@ -54,7 +59,7 @@ public class Main extends JavaPlugin {
 
             if(SQL.isConnected()) {
                 Bukkit.getLogger().info(getString("Messages.database-connected"));
-                SQL.createTable();
+                SQL.createTables();
             }
         }
     }

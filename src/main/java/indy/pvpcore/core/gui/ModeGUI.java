@@ -80,6 +80,8 @@ public class ModeGUI implements Listener {
         Player player = (Player) e.getWhoClicked();
         int slot = e.getRawSlot();
 
+        player.closeInventory();
+
         if(modes.containsKey(slot)) {
             player.chat(modes.get(slot));
         }

@@ -241,5 +241,52 @@ Database:
   password:
   prefix: core_
 
+DailyReward:
+  reminder: true
+  reminder-message: '&aYour daily reward is ready to claim. Claim it using /reward.'
+  reward-claimed-message: '&cYou have already claimed your reward today. Please come back tomorrow for more rewards!'
+  claim-message: "&aYou have claimed your today's reward. Come back tomorrow to claim your next reward! Your current streak: %streak%"
+  rewards:
+    list:
+      - 1_day
+      - 2_days
+    rewards:
+      1_day:
+        streak: 0
+        reward:
+          type: ITEM
+          material: DIAMOND
+          amount: 1
+      2_days:
+        streak: 1
+        reward:
+          type: COMMAND
+          command: 'give %player% diamond_block 1'
+
+Buttons:
+  list:
+    - 'diamond'
+    - 'diamond_block'
+  locations:
+    diamond:
+      reward:
+        type: ITEM
+        material: DIAMOND
+        amount: 1
+      coords:
+        x: 0
+        y: 100
+        z: 0
+        world: world
+    diamond_block:
+      reward:
+        type: COMMAND
+        command: 'give %player% diamond_block 1'
+      coords:
+        x: 0
+        y: 101
+        z: 0
+        world: world
+
 DeveloperMode:
   enabled: true

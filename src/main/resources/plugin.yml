@@ -15,6 +15,7 @@ commands:
   editkit:
   spawn:
   music:
+  reward:
 
 permissions:
   core.ignoreclickevent:
